@@ -44,4 +44,4 @@ services:
 networks:
   net1:
     driver: overlay
-    name: www-net2
+    name: www-net1
