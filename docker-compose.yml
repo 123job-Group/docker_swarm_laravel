@@ -1,0 +1,47 @@
+version: '3.7'
+
+services:
+  app:
+    image: tranluong/laravel-app
+    networks:
+      - net1
+    ports:
+      - "9000:9000"
+    user: "www:www"
+    working_dir: /var/www/app/
+    deploy:
+      replicas: 5
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 150MB
+        reservations:
+          cpus: '0.25'
+          memory: 50MB
+      restart_policy:
+        condition: on-failure
+
+  web:
+    image: tranluong/laravel-web
+    networks:
+      - net1
+    ports:
+      - 8080:80
+    deploy:
+      replicas: 5
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 150MB
+        reservations:
+          cpus: '0.25'
+          memory: 50MB
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - app
+
+networks:
+  net1:
+    driver: overlay
+    name: www-net2
